@@ -40,11 +40,6 @@ def send_email(subject, sender_email, recipient_email, smtp_password, content):
 
         smtp.send_message(msg)
 
-subject = "Test Email"
-sender_email = "uhcodeinc@gmail.com"
-recipient_email = "seanfaubus@gmail.com"
-smtp_server = 'smtp.gmail.com'
-smtp_password = "rwxs rsre oqbz vzfn"
 
 #send_email(subject, sender_email, recipient_email, smtp_password)
 
