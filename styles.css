@@ -1,0 +1,257 @@
+body {
+    background-color: #F0DDD6;
+    font-family: 'Montserrat', sans-serif;
+    
+  }
+  .text-color-custom {
+    color: #997965;
+  }
+  .bg-custom {
+  background-color: #997965 ;
+  border-color: #997965 ; /* Ensures border color matches the background color */
+  }
+
+.section-title {
+color: #997965;
+font-family: 'Montserrat', sans-serif;
+
+  }
+
+  .section-divider {
+    margin-top: 3rem;
+  margin-bottom: 3rem;
+  border: 0;
+  border-top: 1px solid #997965;
+}
+
+.thankyou-title {
+  color: #997965;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 50px;
+  font-weight: bold;
+  
+    }
+
+.accordion {
+  padding: 20px;
+}
+
+.faq-title {
+  text-align: center;
+  padding-bottom: 20px;
+}
+
+.instagram-section {
+  background-color: #F0DDD6; /* Same color as the text */
+  padding: 50px 0; /* Adjust padding as needed */
+}
+
+.photo-placeholder img {
+  width: 100px; /* Adjust the size of the photos */
+  border-radius: 50%; /* Make the photos circular */
+  margin: 5px; /* Add some spacing between the photos */
+
+}
+
+.follow-placeholder {
+  text-align: center; /* Center the content */
+  color: white; /* Text color */
+}
+
+.follow-title {
+  font-size: 24px; /* Adjust font size as needed */
+  font-family: 'Comic Sans MS', cursive; /* Use a playful font */
+}
+
+.instagram-logo {
+  width: 80px; /* Adjust the size of the Instagram logo */
+  margin-top: 20px; /* Add some spacing between the title and logo */
+}
+
+
+
+.contact-form {
+  
+  padding: 20px;
+  border-radius: 20px;
+}
+
+.contact-header,
+.contact-info-header {
+  color: #F0DDD6;
+}
+
+.contact-info {
+  
+  color: #F0DDD6;
+  padding: 20px;
+}
+
+.contact-info-background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url('background-image.jpg');
+  opacity: 0.2;
+}
+ 
+.footer-logo {
+  max-width: 150px; /* Adjust size as needed */
+  height: auto;
+}
+.login-container {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 400px; /* Adjust the width as needed */
+  height: 250px; /* Adjust the height as needed */
+  background-color: #ffffff;
+  padding: 50px 30px; /* Increase padding */
+  border-radius: 15px; /* Increase border radius */
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.login-form {
+  margin-top: 0px; /* Add space between container top and form */
+}
+
+.login-form .mb-3 {
+  margin-bottom: 30px; /* Add space between form fields */
+}
+
+.login-form .form-control {
+  background-color: #997965;
+  border-color: #997965;
+  color: #ffffff; /* Change text color to white */
+  padding: 10px 15px; /* Increase padding */
+  font-size: 16px; /* Increase font size */
+}
+
+.login-section-title {
+  font-size: 50px; /* Increase font size */
+}
+
+.login-btn-primary {
+  margin-left: 150px;
+  background-color: #997965; /* Set background color to #997965 */
+  color: #ffffff; /* Set text color to white */
+  border: none; /* Remove border */
+  border-radius: 5px; 
+
+  
+  ; /* Center the button horizontally */
+}
+/* Add your other styles here */
+
+
+/* CONTACT SECTION */
+.contact-section {
+  background-color: #F0DDD6; /* Adjust the background color as needed */
+  padding: 2rem 0;
+  width:100%;
+  color:#997965
+  
+}
+
+.contact-info-header {
+  
+  margin-bottom: 1.5rem;
+  font-family: 'Montserrat', sans-serif;
+
+}
+
+.contact-info-item {
+  font-size: 1.2rem;
+  line-height: 2.5;
+}
+
+.contact-icon {
+  width: 30px; /* Adjust icon size as needed */
+  height: 30px; /* Adjust icon size as needed */
+}
+
+.contact-info-item span {
+  margin-left: 0.75rem; /* Space between icon and text */
+}
+
+.map-location img {
+  max-width: 100%; /* Ensures the map is responsive */
+  height: auto;
+}
+
+/* Additional styling for responsive breakpoints if necessary */
+@media (max-width: 768px) {
+  .contact-info-item {
+    justify-content: start;
+  }
+}
+.instagram-icon {
+  width: 50px; /* Adjust width as needed */
+  height: auto; /* Maintain aspect ratio */
+}
+
+
+/* SOCIAL MEDIA SECTION */
+
+.social-media-section {
+  background-color: #F0DDD6; 
+  padding: 2rem 0;
+ 
+}
+
+.social-media-header {
+  font-size: 24px;
+  margin-bottom: 1rem;
+}
+
+.social-media-icons {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 20px; /* Adjust as needed */
+  padding: 20px;
+}
+
+.social-icon {
+  max-width: 30%; /* Adjust based on your design */
+  height: auto;
+  margin-bottom: 10px; /* Adjust as needed */
+  transition: transform 0.3s ease;
+}
+
+
+.social-icon-link {
+  display: inline-block;
+}
+
+.social-icon-link:hover .social-icon {
+  transform: scale(1.1); /* Slightly enlarge icons on hover */
+}
+
+/* Add responsive design as needed */
+@media (max-width: 576px) {
+  .social-media-icons {
+    flex-direction: column;
+  }
+}
+
+/* LOGIN PAGE RETURN HOME BUTTON */
+.return-home-btn {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  padding: 10px 15px;
+  background-color: #ffffff; /* Example color: Bootstrap primary button color */
+  color: #997965;
+  text-decoration: none;
+  font-weight: bold;
+  border-radius: 5px;
+  display: inline-block;
+}

@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VVN.INKS Reports</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-aFq/bzH65dt+w6FI2ooMVUpc+21e0SRygnTpmBvdBgSdnuTN7QbdgL+OapgHtvPp" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/x-icon" href="/squid.png">
+
+    
+
+    <style>
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: #f0ddd6;
+            color: #997965;
+            padding: 30px; 
+        }
+        
+      
+
+        h2 {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-top: 20px;
+            text-align: center;
+        }
+        .scroll-table {
+            max-height: 40vh; 
+            overflow-y: auto; 
+            border-radius: 10px;
+            padding:40px
+        }
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin-top: 20px;
+            background-color: #ffffff; /* Ensuring white background for tables */
+            border-radius: 10px;
+            
+            
+        }
+        td {
+            
+            padding: 9px;
+            text-align: left;
+            border-radius: 10px;
+        }
+
+        th {
+            background-color: #f2f2f2;
+            border-radius: 10px;
+        }
+
+        tbody tr:hover {
+            background-color: #f2f2f2; /* Hover background color */
+            border-radius: 10px;
+        }
+
+        @media (max-width: 768px) {
+            /* Adjust table styles for smaller screens */
+            .scroll-table {
+                max-height: 200px;
+                overflow-y: scroll;
+            }
+        }
+        
+    </style>
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg" style="background-color: #f0ddd6;">
+        <!-- Tattoo pen image link added here -->
+        <ul class="navbar-nav">
+            <li class="nav-item">
+                <a class="nav-link" href="{{ url_for('logout') }}">
+                    <img src="tattoopen.png" alt="Tattoo Pen" height="50"> <!-- Adjust height as necessary -->
+                </a>
+            </li>
+        </ul>
+        <div class="dashboard-options">
+            <a href="/search" class="btn btn-primary btn-lg text-white" style="background-color: #997965;border-color: #997965 ;">View Client</a>
+            <a href="/" class="btn btn-primary btn-lg text-white" style="background-color: #997965;border-color: #997965 ;">Return Home</a>
+        </div>
+    </nav>
+<!-- Form to view a client -->
+
+<hr class="section-divider">
+    <h2>10 Most Recent Clients Who Haven't Scheduled an Appointment</h2>
+    <div class="scroll-table">  
+    <table>
+        <thead>
+            <tr>
+                <th>Client Name</th>
+                <th>Phone Number</th>
+                <th>Email Address</th>
+                <th>Service</th>
+            </tr>
+        </thead>
+        
+        <tbody>
+            {% for client in tenclients %}
+            <tr>
+                <td>{{ client.Client_Name }}</td>
+                <td>{{ client.phone_number }}</td>
+                <td>{{ client.email_address }}</td>
+                <td>{{ client.Service }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+        
+    </table>
+ </div>
+ <hr class="section-divider">
+    <h2>All Clients With Scheduled Appointment</h2>
+    <div class="scroll-table">  
+    <table>
+        <thead>
+            <tr>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Email Address</th>
+                <th>Phone Number</th>
+                <th>Status</th>
+                <th>Service</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for client in scheduledClients %}
+            <tr>
+                <td>{{ client.fname }}</td>
+                <td>{{ client.lname }}</td>
+                <td>{{ client.email_address }}</td>
+                <td>{{ client.phone_number }}</td>
+                <td>{{ client.status_name }}</td>
+                <td>{{ client.service_name }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    </div>
+    <hr class="section-divider">
+    <h2>Value of Scheduled Clients</h2>
+    <div class="scroll-table">  
+    <table>
+        <thead>
+            <tr>
+                <th>$ on the schedule</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for i in scheduledValue %}
+            <tr>
+                <td>{{ i.Scheduled_Value }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    </div>
+
+    <hr class="section-divider">
+    <h2>Revenue Earned By Year</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Year</th>
+                <th>Revenue</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for year in revenuebyyear %}
+            <tr>
+                <td>{{ year.Year }}</td>
+                <td>{{ year.Revenue }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <hr class="section-divider">
+    <h2>Revenue Earned By Service</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Service</th>
+                <th>Revenue</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for serv in revenuebyservice %}
+            <tr>
+                <td>{{ serv.Service }}</td>
+                <td>{{ serv.Revenue }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <hr class="section-divider">
+    <h2>Service Popularity Over the Years</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Service</th>
+                <th>All-Time</th>
+                <th>2022</th>
+                <th>2023</th>
+                <th>2024</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for service in servicesOverTime %}
+            <tr>
+                <td>{{ service.Service }}</td>
+                <td>{{ service.All_Time }}</td>
+                <td>{{ service.twentytwo }}</td>
+                <td>{{ service.twentythree }}</td>
+                <td>{{ service.twentyfour }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <hr class="section-divider">
+    <!-- <h2>Clients Registered in January 2024</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Phone Number</th>
+                <th>Service requested</th>
+                <th>Waiver Signed</th>
+                <th>Medical History</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for client in clients2024Jan %}
+            <tr>
+                <td>{{ client.First_Name }}</td>
+                <td>{{ client.Last_Name}}</td>
+                <td>{{ client.Phone_Number }}</td>
+                <td>{{ client.Service_Requested }}</td>
+                <td>{{ client.Waiver_Signed }}</td>
+                <td>{{ client.Medical_History }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <h2>Clients Registered in February 2024</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Phone Number</th>
+                <th>Service requested</th>
+                <th>Waiver Signed</th>
+                <th>Medical History</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for client in clients2024Feb %}
+            <tr>
+                <td>{{ client.First_Name }}</td>
+                <td>{{ client.Last_Name}}</td>
+                <td>{{ client.Phone_Number }}</td>
+                <td>{{ client.Service_Requested }}</td>
+                <td>{{ client.Waiver_Signed }}</td>
+                <td>{{ client.Medical_History }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <h2>Clients Registered in March 2024</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Phone Number</th>
+                <th>Service requested</th>
+                <th>Waiver Signed</th>
+                <th>Medical History</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for client in clients2024Mar %}
+            <tr>
+                <td>{{ client.First_Name }}</td>
+                <td>{{ client.Last_Name}}</td>
+                <td>{{ client.Phone_Number }}</td>
+                <td>{{ client.Service_Requested }}</td>
+                <td>{{ client.Waiver_Signed }}</td>
+                <td>{{ client.Medical_History }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <h2>Clients Registered in April 2024</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Phone Number</th>
+                <th>Service requested</th>
+                <th>Waiver Signed</th>
+                <th>Medical History</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for client in clients2024Apr %}
+            <tr>
+                <td>{{ client.First_Name }}</td>
+                <td>{{ client.Last_Name}}</td>
+                <td>{{ client.Phone_Number }}</td>
+                <td>{{ client.Service_Requested }}</td>
+                <td>{{ client.Waiver_Signed }}</td>
+                <td>{{ client.Medical_History }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <h2>Clients with a Medical History and Signed Waiver </h2>
+    <div class="scroll-table">  
+    <table>
+        <thead>
+            <tr>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Phone Number</th>
+                <th>Service requested</th>
+                <th>Waiver Signed</th>
+                <th>Medical History</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for client in clientsMedHistWaivSign %}
+            <tr>
+                <td>{{ client.First_Name }}</td>
+                <td>{{ client.Last_Name}}</td>
+                <td>{{ client.Phone_Number }}</td>
+                <td>{{ client.Service_Requested }}</td>
+                <td>{{ client.Waiver_Signed }}</td>
+                <td>{{ client.Medical_History }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table> -->
+</body>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('#queryForm').submit(function(event) {
+                event.preventDefault(); // Prevent default form submission
+    
+                var phone_number = $('#phone_number').val(); // Get the ID from the form input
+    
+                // Send AJAX request to the server
+                $.ajax({
+                    type: 'POST',
+                    url: '/query',
+                    data: { phone_number: phone_number },
+                    success: function(response) {
+                        // Clear the existing content before appending new results
+                        $('#queryResults').empty();
+                        
+                        // Append the new results to the queryResults div
+                    $('#queryResults').append('<h2>Query Results</h2>');
+                    $('#queryResults').append('<table border="1">');
+                    $('#queryResults').append('<thead><tr></tr></thead>');
+                    $('#queryResults').append('<tbody>');
+                    
+                    // Create table headers dynamically from the keys of the first row
+                    $.each(response.queryResult[0], function(key, value) {
+                        $('#queryResults thead tr').append('<th>' + key + '</th>');
+                    });
+                    
+                    // Append the data to the table rows
+                    $.each(response.queryResult, function(index, row) {
+                        var newRow = '<tr>';
+                        $.each(row, function(key, value) {
+                            newRow += '<td>' + value + '</td>';
+                        });
+                        newRow += '</tr>';
+                        $('#queryResults tbody').append(newRow);
+                    });
+                    
+                    $('#queryResults').append('</tbody></table>');
+                }
+            });
+        });
+    });
+    document.addEventListener('DOMContentLoaded', function() {
+    document.getElementById('columnSelect').addEventListener('change', function() {
+        var selectedColumn = this.value;
+        var newValuediv = document.getElementById('newValuediv');
+        var statusDropdown = document.getElementById('statusDropdown');
+        var depositDropdown = document.getElementById('depositDropdown');
+        var waiverDropdown = document.getElementById('waiverDropdown');
+        var serviceDropdown = document.getElementById('serviceDropdown')
+
+        // Show or hide the status select dropdown based on the selected column
+        if (selectedColumn === 'status_id') {
+            waiverDropdown.style.display = 'none';
+            statusDropdown.style.display = 'block';
+            newValuediv.style.display = 'none';
+            serviceDropdown.style.display = 'none';
+            depositDropdown.style.display = 'none'; // Hide deposit dropdown if status dropdown is shown
+        } else if (selectedColumn === 'deposit_paid') {
+            waiverDropdown.style.display = 'none';
+            depositDropdown.style.display = 'block';
+            serviceDropdown.style.display = 'none';
+            newValuediv.style.display = 'none';
+            statusDropdown.style.display = 'none'; // Hide status dropdown if deposit dropdown is shown
+        } else if (selectedColumn === 'waiver_signed') {
+            waiverDropdown.style.display = 'block';
+            depositDropdown.style.display = 'none';
+            serviceDropdown.style.display = 'none';
+            newValuediv.style.display = 'none';
+            statusDropdown.style.display = 'none'; // Hide status dropdown if deposit dropdown is shown
+        }    else if (selectedColumn === 'service_id') {
+            waiverDropdown.style.display = 'none';
+            depositDropdown.style.display = 'none';
+            serviceDropdown.style.display = 'block';
+            newValuediv.style.display = 'none';
+            statusDropdown.style.display = 'none'; // Hide status dropdown if deposit dropdown is shown
+        } else {
+            statusDropdown.style.display = 'none';
+            waiverDropdown.style.display = 'none';
+            serviceDropdown.style.display = 'none';
+            depositDropdown.style.display = 'none';
+            newValuediv.style.display = 'block';
+        }
+
+    });
+});
+
+
+
+$(document).ready(function() {
+    // Handle form submission
+    $('#updateForm').submit(function(event) {
+        event.preventDefault(); // Prevent default form submission
+        console.log(document.getElementById('statusSelect'))
+        // Gather form data
+        var clientId = $('#clientId').val();
+        var column = $('#columnSelect').val();
+        var newValue;
+
+        // Determine the value of newValue based on the selected column
+        if (column === 'status_id') {
+            // If the selected column is status_id, get the value from statusSelect
+            newValue = $('#statusSelect').val();
+        } else if (column === 'deposit_paid') {
+            // If the selected column is deposit_paid, get the value from depositSelect
+            newValue = $('#depositSelect').val();
+        } else if (column === 'service_id') {
+            // If the selected column is deposit_paid, get the value from depositSelect
+            newValue = $('#serviceSelect').val();
+        }else if (column === 'waiver_signed') {
+            // If the selected column is deposit_paid, get the value from depositSelect
+            newValue = $('#waiverSelect').val();
+        } else {
+            // For other columns, get the value from the input field
+            newValue = $('#newValue').val();
+        }
+
+        console.log(column)
+        console.log(newValue)
+
+        var requestData = {
+            client_id: clientId,
+            column: column,
+            newValue: newValue
+        };
+
+        // Send data to the API
+        $.ajax({
+            type: 'PUT',
+            url: '/api/update_client',
+            contentType: 'application/json',
+            data: JSON.stringify(requestData),
+            success: function(response) {
+                $('#updateMessage').text(response.message);
+            },
+            error: function() {
+                $('#updateMessage').text('An error occurred while updating.');
+            }
+        });
+    });
+});
+
+
+
+    </script>
+
+</html>

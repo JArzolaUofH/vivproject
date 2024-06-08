@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>All Clients</title>
+</head>
+<body>
+    <h1>All Clients</h1>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Client ID</th>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Phone Number</th>
+                <th>Email Address</th>
+                <th>Medical History</th>
+                <th>Skincare Products</th>
+                <th>PMU Done</th>
+                <th>Over 18</th>
+                <th>Submission Date</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for client in clients %}
+            <tr>
+                <td>{{ client.client_id }}</td>
+                <td>{{ client.fname }}</td>
+                <td>{{ client.lname }}</td>
+                <td>{{ client.phone_number }}</td>
+                <td>{{ client.email_address }}</td>
+                <td>{{ client.medical_history }}</td>
+                <td>{{ client.skincare_products }}</td>
+                <td>{{ client.pmu_done }}</td>
+                <td>{{ client.over_18 }}</td>
+                <td>{{ client.submission_date }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>

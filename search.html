@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VVN.INKS Search</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-aFq/bzH65dt+w6FI2ooMVUpc+21e0SRygnTpmBvdBgSdnuTN7QbdgL+OapgHtvPp" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/x-icon" href="/squid.png">
+
+    
+
+    <style>
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: #f0ddd6;
+            color: #997965;
+            padding: 20px; 
+        }
+        
+      
+
+        h2 {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-top: 20px;
+            text-align: center;
+            padding:20px
+        }
+        .scroll-table {
+            max-height: 40vh; 
+            overflow-y: auto; 
+            border-radius: 10px;
+        }
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin-top: 20px;
+            background-color: #ffffff; /* Ensuring white background for tables */
+            border-radius: 10px;
+        }
+        td {
+            
+            padding: 8px;
+            text-align: left;
+            border-radius: 10px;
+        }
+
+        th {
+            background-color: #f2f2f2;
+            border-radius: 10px;
+        }
+
+        tbody tr:hover {
+            background-color: #f2f2f2; /* Hover background color */
+            border-radius: 10px;
+        }
+
+        @media (max-width: 768px) {
+            /* Adjust table styles for smaller screens */
+            .scroll-table {
+                max-height: 200px;
+                overflow-y: scroll;
+            }
+        }
+        
+    </style>
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg" style="background-color: #f0ddd6;">
+        <!-- Tattoo pen image link added here -->
+        <ul class="navbar-nav">
+            <li class="nav-item">
+                <a class="nav-link" href="{{ url_for('logout') }}">
+                    <img src="tattoopen.png" alt="Tattoo Pen" height="50"> <!-- Adjust height as necessary -->
+                </a>
+            </li>
+        </ul>
+        <div class="dashboard-options">
+            <a href="/reports" class="btn btn-primary btn-lg text-white" style="background-color: #997965;border-color: #997965 ;">Reports</a>
+            <a href="/" class="btn btn-primary btn-lg text-white" style="background-color: #997965;border-color: #997965 ;">Return Home</a>
+        </div>
+    </nav>
+    <hr class="section-divider">
+    <!-- Form to view a client -->
+<h2>Search Clients</h2>
+<form id="queryForm">
+    <!-- <label for="id">Enter ID:</label><br>
+    <input type="number" id="id" name="id" required><br><br>
+    <input type="submit" value="Submit"> -->
+    <label for="phone_number">Enter Phone Number:</label><br>
+    <input type="tel" id="phone_number" name="phone_number" maxlength="10"><br><br>
+    <input type="submit" value="Submit" class="btn btn-primary  text-white" style="background-color: #997965; border-color: #997965;">
+</form>
+<br><br>
+
+<div id="queryResults">
+    <!-- Query results will be displayed here -->
+</div>
+<hr class="section-divider"> 
+<!-- Form to Update client-->
+
+<h2>Update Client</h2>
+    <form id="updateForm">
+        <label for="clientId">Client ID:</label><br>
+        <input type="number" id="clientId" name="clientId" required><br><br>
+
+        <label for="columnSelect">Select Column to Update:</label><br>
+        <select id="columnSelect" name="columnSelect">
+            <option value="" selected disabled>Select a Column</option>
+            {% for column in colNames[1:] %}
+            <option value="{{ column.COLUMN_NAME }}">{{ column.COLUMN_NAME }}</option>
+            {% endfor %}
+        </select><br><br>
+
+        <!-- <div id="infoMessage" style="display: none;">Choose 1 if new</div> -->
+        
+        <div id="statusDropdown" style="display: none;">
+            <label for="statusSelect">Select Status:</label><br>
+            <select id="statusSelect" name="statusSelect">
+                <option value="" selected disabled>Select a Status</option>
+                {% for status in client_status_result %}
+                <option value={{ status.status_id }}>{{ status.status_name }}</option>
+                {% endfor %}
+            </select><br><br>
+        </div>
+
+        <div id="serviceDropdown" style="display: none;">
+            <label for="serviceSelect">Select Service:</label><br>
+            <select id="serviceSelect" name="serviceSelect">
+                <option value="" selected disabled>Select a Service</option>
+                {% for service in services %}
+                <option value={{ service.service_id }}>{{ service.service_name }}</option>
+                {% endfor %}
+            </select><br><br>
+        </div>
+
+        <div id="waiverDropdown" style="display: none;">
+            <label for="waiverSelect">Select Status:</label><br>
+            <select id="waiverSelect" name="waiverSelect">
+                <option value="" selected disabled>Select a Status</option>
+                
+                <option value=0>Incomplete</option>
+                <option value=1>Complete</option>
+                
+            </select><br><br>
+        </div>
+
+        <div id="depositDropdown" style="display: none;">
+            <label for="depositSelect">Select Deposit Status:</label><br>
+            <select id="depositSelect" name="depositSelect">
+                <option value="" selected disabled>Select a Deposit Status</option>
+                {% for deposit in deposit_paid_result %}
+                <option value={{ deposit.deposit_id }}>{{ deposit.deposit_status }}</option>
+                {% endfor %}
+            </select><br><br>
+        </div>
+
+        <div id="eighteendropdown" style="display: none;">
+            <label for="eighteenSelect">Select Over 18 Status:</label><br>
+            <select id="eighteenSelect" name="eighteenSelect">
+                <option value="" selected disabled>Select a Status</option>
+                
+                <option value=0>No</option>
+                <option value=1>Yes</option>
+            </select><br><br>
+        </div>
+        
+        <div id="newValuediv">
+        <label for="newValue">New Value:</label><br>
+        <input type="text" id="newValue" name="newValue" ><br><br> 
+       </div>
+
+        <input type="submit" value="Update" class="btn btn-primary text-white" style="background-color: #997965; border-color: #997965;"> 
+    </form>
+
+    <div id="updateMessage"></div>
+
+    <br><br>
+    <hr class="section-divider">
+    <h1>All Clients</h1>
+    <div class="scroll-table"> 
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Client Name</th>
+                <th>Phone Number</th>
+                <th>Email</th>
+                <th>Service</th>
+                <th>Client Status</th>
+                <th>Medical History</th>
+                <th>Skincare Products</th>
+                <th>PMU Done</th>
+                <th>Over 18</th>
+                <th>Waiver Signed</th>
+                <th>Deposit</th>
+                <th>Notes</th>
+                
+            </tr>
+        </thead>
+        <tbody>
+            {% for row in queryResult %}
+            <tr>
+                <td>{{ row['Client Name'] }}</td>
+                <td>{{ row['Phone Number'] }}</td>
+                <td>{{ row['Email'] }}</td>
+                <td>{{ row['Service'] }}</td>
+                <td>{{ row['Client Status'] }}</td>
+                <td>{{ row['Medical History'] }}</td>
+                <td>{{ row['Skincare Products'] }}</td>
+                <td>{{ row['PMU Done'] }}</td>
+                <td>{{ row['Over 18'] }}</td>
+                <td>{{ row['Waiver Signed'] }}</td>
+                <td>{{ row['Deposit'] }}</td>
+                <td>{{ row['Notes'] }}</td>
+                
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    </div>
+    <hr class="section-divider">
+    <h2>Delete Client</h2>
+        <form id="deleteForm" action="/api/client" method="DELETE">
+            <label for="clientId">Client ID:</label><br>
+            <input type="number" id="deleteclientId" name="id" required><br><br>
+
+            <input type="submit" value="Delete" class="btn btn-primary text-white" style="background-color: #997965; border-color: #997965;"> 
+        </form>
+        <hr class="section-divider">
+</body>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+
+document.getElementById("deleteForm").addEventListener("submit", function(event) {
+    event.preventDefault(); // Prevent the form from submitting normally
+
+    // Get the client ID from the form
+    var clientId = document.getElementById("deleteclientId").value;
+    console.log(clientId.value)
+
+    // Ask for confirmation before deleting, including the client ID
+    var confirmation = window.confirm("Are you sure you want to remove client # " + clientId + "?");
+    
+    if (confirmation) {
+        var formData = new FormData(this);
+
+        fetch('/api/client', {
+            method: 'DELETE',
+            body: JSON.stringify(Object.fromEntries(formData)),
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+        .then(response => {
+            if (response.ok) {
+                alert("Client deleted successfully");
+                // Optionally, you can redirect the user or perform other actions here
+            } else {
+                alert("Error deleting client");
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert("An error occurred while deleting client");
+        });
+    } else {
+        // Cancel the delete operation
+        alert("Delete operation canceled");
+    }
+});
+
+
+        $(document).ready(function() {
+            $('#queryForm').submit(function(event) {
+                event.preventDefault(); // Prevent default form submission
+    
+                var phone_number = $('#phone_number').val(); // Get the ID from the form input
+    
+                // Send AJAX request to the server
+                $.ajax({
+                    type: 'POST',
+                    url: '/query',
+                    data: { phone_number: phone_number },
+                    success: function(response) {
+                        // Clear the existing content before appending new results
+                        $('#queryResults').empty();
+                        
+                        // Append the new results to the queryResults div
+                    $('#queryResults').append('<h2>Query Results</h2>');
+                    $('#queryResults').append('<table border="1">');
+                    $('#queryResults').append('<thead><tr></tr></thead>');
+                    $('#queryResults').append('<tbody>');
+                    
+                    // Create table headers dynamically from the keys of the first row
+                    $.each(response.queryResult[0], function(key, value) {
+                        $('#queryResults thead tr').append('<th>' + key + '</th>');
+                    });
+                    
+                    // Append the data to the table rows
+                    $.each(response.queryResult, function(index, row) {
+                        var newRow = '<tr>';
+                        $.each(row, function(key, value) {
+                            newRow += '<td>' + value + '</td>';
+                        });
+                        newRow += '</tr>';
+                        $('#queryResults tbody').append(newRow);
+                    });
+                    
+                    $('#queryResults').append('</tbody></table>');
+                }
+            });
+        });
+    });
+    document.addEventListener('DOMContentLoaded', function() {
+    document.getElementById('columnSelect').addEventListener('change', function() {
+        var selectedColumn = this.value;
+        var newValuediv = document.getElementById('newValuediv');
+        var statusDropdown = document.getElementById('statusDropdown');
+        var depositDropdown = document.getElementById('depositDropdown');
+        var waiverDropdown = document.getElementById('waiverDropdown');
+        var serviceDropdown = document.getElementById('serviceDropdown');
+        var eighteendropdown = document.getElementById('eighteendropdown')
+
+        // Show or hide the status select dropdown based on the selected column
+        if (selectedColumn === 'status_id') {
+            waiverDropdown.style.display = 'none';
+            statusDropdown.style.display = 'block';
+            newValuediv.style.display = 'none';
+            eighteendropdown.style.display = 'none';
+            serviceDropdown.style.display = 'none';
+            depositDropdown.style.display = 'none'; // Hide deposit dropdown if status dropdown is shown
+        } else if (selectedColumn === 'deposit_paid') {
+            waiverDropdown.style.display = 'none';
+            depositDropdown.style.display = 'block';
+            eighteendropdown.style.display = 'none';
+            serviceDropdown.style.display = 'none';
+            newValuediv.style.display = 'none';
+            statusDropdown.style.display = 'none'; // Hide status dropdown if deposit dropdown is shown
+        } else if (selectedColumn === 'over_18') {
+            waiverDropdown.style.display = 'none';
+            depositDropdown.style.display = 'none';
+            serviceDropdown.style.display = 'none';
+            newValuediv.style.display = 'none';
+            eighteendropdown.style.display = 'block';
+            statusDropdown.style.display = 'none'; // Hide status dropdown if deposit dropdown is shown
+        }
+         else if (selectedColumn === 'waiver_signed') {
+            waiverDropdown.style.display = 'block';
+            eighteendropdown.style.display = 'none';
+            depositDropdown.style.display = 'none';
+            serviceDropdown.style.display = 'none';
+            newValuediv.style.display = 'none';
+            statusDropdown.style.display = 'none'; // Hide status dropdown if deposit dropdown is shown
+        }    else if (selectedColumn === 'service_id') {
+            waiverDropdown.style.display = 'none';
+            depositDropdown.style.display = 'none';
+            eighteendropdown.style.display = 'none';
+            serviceDropdown.style.display = 'block';
+            newValuediv.style.display = 'none';
+            statusDropdown.style.display = 'none'; // Hide status dropdown if deposit dropdown is shown
+        } else {
+            statusDropdown.style.display = 'none';
+            waiverDropdown.style.display = 'none';
+            serviceDropdown.style.display = 'none';
+            eighteendropdown.style.display = 'none';
+            depositDropdown.style.display = 'none';
+            newValuediv.style.display = 'block';
+        }
+
+    });
+});
+
+
+
+$(document).ready(function() {
+    // Handle form submission
+    $('#updateForm').submit(function(event) {
+        event.preventDefault(); // Prevent default form submission
+        
+        // Gather form data
+        var clientId = $('#clientId').val();
+        var column = $('#columnSelect').val();
+        var newValue;
+
+        // Determine the value of newValue based on the selected column
+        if (column === 'status_id') {
+            // If the selected column is status_id, get the value from statusSelect
+            newValue = $('#statusSelect').val();
+        } else if (column === 'deposit_paid') {
+            // If the selected column is deposit_paid, get the value from depositSelect
+            newValue = $('#depositSelect').val();
+        } else if (column === 'over_18') {
+            // If the selected column is over_18, get the value from eighteenSelect
+            newValue = $('#eighteenSelect').val();
+        } else if (column === 'service_id') {
+            // If the selected column is service_id, get the value from serviceSelect
+            newValue = $('#serviceSelect').val();
+        } else if (column === 'waiver_signed') {
+            // If the selected column is waiver_signed, get the value from waiverSelect
+            newValue = $('#waiverSelect').val();
+        } else {
+            // For other columns, get the value from the input field
+            newValue = $('#newValue').val();
+        }
+
+        // Confirmation popup before submitting
+        var confirmation = confirm("Are you sure you want to update client #" + clientId +"?");
+        if (confirmation) {
+            var requestData = {
+                client_id: clientId,
+                column: column,
+                newValue: newValue
+            };
+
+            // Send data to the API
+            $.ajax({
+                type: 'PUT',
+                url: '/api/update_client',
+                contentType: 'application/json',
+                data: JSON.stringify(requestData),
+                success: function(response) {
+                    $('#updateMessage').text(response.message);
+                },
+                error: function() {
+                    $('#updateMessage').text('An error occurred while updating.');
+                }
+            });
+        } else {
+            // Cancel the update operation
+            $('#updateMessage').text('Update operation canceled.');
+        }
+    });
+});
+
+
+
+    </script>
+
+</html>
